@@ -29,6 +29,21 @@
       "title": "Learn Svelte js lifecycle",
       "status": "Pending",
       "id": 6
+    },
+    {
+      "title": "Visit college accounts",
+      "status": "Pending",
+      "id": 7
+    },
+    {
+      "title": "Attend exam",
+      "status": "Pending",
+      "id": 8
+    },
+    {
+      "title": "Added Svelte French Toast",
+      "status": "Pending",
+      "id": 9
     }
   ]
 }

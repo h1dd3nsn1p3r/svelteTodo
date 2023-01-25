@@ -15,3 +15,10 @@ Once you are done installing the dependencies, its time to install the json-serv
 
 - Run `npm run dev` to start the app.
 - Run `npm run db` to start the json-server.
+
+## Credits
+
+- [Svelte](https://svelte.dev/)
+- [Svente French Toast](https://svelte-french-toast.com/)
+- [Svente Flowbite](https://svelte-flowbite.com/)
+- [json-server](https://www.npmjs.com/package/json-server)
