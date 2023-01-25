@@ -1,0 +1,34 @@
+{
+  "todos": [
+    {
+      "title": "Learn Svelte js component",
+      "status": "Completed",
+      "id": 1
+    },
+    {
+      "title": "Learn Svelte js events bindings",
+      "status": "Pending",
+      "id": 2
+    },
+    {
+      "title": "Learn Svelte js props",
+      "status": "Pending",
+      "id": 3
+    },
+    {
+      "title": "Learn Svelte js dynamic components",
+      "status": "Pending",
+      "id": 4
+    },
+    {
+      "title": "Learn Svelte js templating",
+      "status": "Pending",
+      "id": 5
+    },
+    {
+      "title": "Learn Svelte js lifecycle",
+      "status": "Pending",
+      "id": 6
+    }
+  ]
+}

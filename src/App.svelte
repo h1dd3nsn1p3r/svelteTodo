@@ -1,9 +1,7 @@
 <script>
-	import svelteLogo from "./assets/svelte.svg";
-	import Counter from "./lib/Counter.svelte";
-	import { Alert } from "flowbite-svelte";
+	import ListTodos from "@component/ListTodos.svelte";
 </script>
 
 <main>
-	<Alert>Svelte, Flowbite & Vite on Action!!!</Alert>
+	<ListTodos />
 </main>
