@@ -1,4 +1,4 @@
-# Todo using Svelte
+# Todo App Using Svelte
 
 This is my first attempt at using Svelte. I have used Svelte to create a simple todo app. I have used json-server to create a fake REST API to store the todo items. 
 
