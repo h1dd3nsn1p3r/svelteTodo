@@ -1,49 +1,44 @@
 {
   "todos": [
     {
-      "title": "Learn Svelte js component",
+      "title": "Learn Svelte basics",
       "status": "Completed",
       "id": 1
     },
     {
-      "title": "Learn Svelte js events bindings",
-      "status": "Pending",
+      "title": "Learn Svelte folder structure",
+      "status": "Completed",
       "id": 2
     },
     {
-      "title": "Learn Svelte js props",
-      "status": "Pending",
+      "title": "Learn Svelte components",
+      "status": "Completed",
       "id": 3
     },
     {
-      "title": "Learn Svelte js dynamic components",
-      "status": "Pending",
+      "title": "Learn Svelte bindings ",
+      "status": "Completed",
       "id": 4
     },
     {
-      "title": "Learn Svelte js templating",
+      "title": "Learn Svelte events",
       "status": "Pending",
       "id": 5
     },
     {
-      "title": "Learn Svelte js lifecycle",
+      "title": "Learn Svelte store",
       "status": "Pending",
       "id": 6
     },
     {
-      "title": "Visit college accounts",
+      "title": "Learn Svelte context ",
       "status": "Pending",
       "id": 7
     },
     {
-      "title": "Attend exam",
+      "title": "Learn Svelte kit",
       "status": "Pending",
       "id": 8
-    },
-    {
-      "title": "Added Svelte French Toast",
-      "status": "Pending",
-      "id": 9
     }
   ]
 }

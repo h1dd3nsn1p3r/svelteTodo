@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from "svelte";
-	import { slide } from "svelte/transition";
 	import { Input, Button, Spinner, Badge } from "flowbite-svelte";
 	import toast, { Toaster } from "svelte-french-toast";
 
@@ -88,6 +87,59 @@
 	};
 
 	/**
+	 * Change the status of todo.
+	 * Make a post request to update the status of todo.
+	 */
+	const handleCheckboxChange = async (id) => {
+		const todo = todoList.find((todo) => todo.id === id);
+		const updatedTodo = {
+			...todo,
+			status: todo.status === "Pending" ? "Completed" : "Pending",
+		};
+
+		try {
+			const res = await fetch(`${db}/${id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updatedTodo),
+			});
+
+			if (res.status === 200) {
+				toast.success("Todo status updated successfully.");
+			}
+		} catch (err) {
+			console.error(err);
+			toast.error("Todo status couldn't be updated!!", {
+				duration: 10000,
+			});
+		}
+	};
+
+	/**
+	 *
+	 * Delete a todo.
+	 */
+
+	const deleteTodoHandler = async (id) => {
+		try {
+			const res = await fetch(`${db}/${id}`, {
+				method: "DELETE",
+			});
+
+			if (res.status === 200) {
+				toast.success("Todo deleted successfully.");
+			}
+		} catch (err) {
+			console.error(err);
+			toast.error("Todo couldn't be deleted!!", {
+				duration: 10000,
+			});
+		}
+	};
+
+	/**
 	 * On mount lifecycle hook.
 	 * Get all todos.
 	 * @returns {void}
@@ -111,9 +163,12 @@
 					bind:value={todo.title}
 				/>
 			</div>
-
 			<div>
-				<Button size="xl" on:click={addTodoHandler}>
+				<Button
+					size="xl"
+					on:click={addTodoHandler}
+					disabled={!todo.title || status.isInserting}
+				>
 					{#if status.isInserting}
 						<Spinner class="mr-3" size="4" />
 					{/if}
@@ -127,10 +182,20 @@
 		<div class="all-todos">
 			<ul>
 				{#each todoList as todo}
-					<li>
-						<div class="id">{todo.id}</div>
+					<li class={todo.status === "Completed" ? "completed" : ""}>
+						<div class="checkbox">
+							<input
+								on:change={handleCheckboxChange(todo.id)}
+								checked={todo.status === "Completed"
+									? true
+									: false}
+								type="checkbox"
+								value=""
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+							/>
+						</div>
 						<div class="title">
-							{todo.title}
+							<span class="todo-title">{todo.title}</span>
 							<Badge
 								rounded
 								color={todo.status === "Completed"
@@ -158,7 +223,11 @@
 									/>
 								</svg>
 							</Button>
-							<Button size="xs" color="red">
+							<Button
+								size="xs"
+								color="red"
+								on:click={deleteTodoHandler(todo.id)}
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="16"

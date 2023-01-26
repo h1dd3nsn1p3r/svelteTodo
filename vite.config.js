@@ -15,4 +15,8 @@ export default defineConfig({
       '@utils': resolve(__dirname, 'src/utilities/'),
     },
   },
+
+  // Define the base path where you would like to deploy the site.
+  // Refer: https://vitepress.vuejs.org/config/app-configs#base
+  base: '/',
 })
