@@ -4,10 +4,17 @@ This is my first attempt at using Svelte. I have used Svelte to create a simple 
 
 ## Setup
 
-Clone this repo & run `npm install` to install all the dependencies. Once you are done installing the dependencies, its time to install the json-server globally. Run `npm install -g json-server` to install the json-server globally.Once dependencies has been installed, running the app is pretty simple. Just run `npm run dev` to start the app & run `npm run db` to start the json-server.
+Clone this repo & run `npm install` to install all the dependencies. Once you are done installing the dependencies, its time to install the json-server globally. 
+
+- Run `npm install -g json-server` to install the json-server globally. 
+
+Once dependencies has been installed, running the app is pretty simple. 
+
+- Run `npm run dev` to start the app. 
+- Run `npm run db` to start the json-server.
 
 
-### Credits
+## Credits
 
 - [Svelte](https://svelte.dev/)
 - [Svente French Toast](https://svelte-french-toast.com/)
