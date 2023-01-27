@@ -37,18 +37,13 @@
     },
     {
       "title": "Learn Svelte kit",
-      "status": "Pending",
-      "id": 8
+      "id": 8,
+      "status": "Pending"
     },
     {
       "title": "Find good UI framework for Svelte",
-      "status": "Pending",
-      "id": 9
-    },
-    {
-      "title": "Create a expenses tracking app (mobile) using Svelte",
-      "status": "Pending",
-      "id": 10
+      "id": 9,
+      "status": "Pending"
     }
   ]
 }

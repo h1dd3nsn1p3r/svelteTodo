@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { Input, Button, Spinner, Badge } from "flowbite-svelte";
+	import { Input, Button, Spinner, Badge, Modal } from "flowbite-svelte";
 	import toast, { Toaster } from "svelte-french-toast";
 
 	/**
@@ -16,6 +16,17 @@
 	let todoList = [];
 
 	/**
+	 *
+	 * Computed function to get the todo status via id.
+	 * @param {Number} id
+	 */
+
+	$: getTodoStatusbyId = (id) => {
+		const todo = todoList.find((todo) => todo.id === id);
+		return todo.status;
+	};
+
+	/**
 	 * For store todo input values.
 	 * @type {Object} todo
 	 */
@@ -25,12 +36,31 @@
 	};
 
 	/**
+	 * For storing todo title to be edited.
+	 */
+
+	let tempoEditTodo = {
+		id: "",
+		title: "",
+	};
+
+	/**
+	 * For storing todo title to be deleted.
+	 */
+
+	let tempoDeleteTodo = {
+		id: "",
+	};
+
+	/**
 	 * For storing status of the request.
 	 * @type {Object} status
 	 */
 	let status = {
 		isInserting: false,
 		todosFetched: false,
+		editModal: false,
+		deleteModal: false,
 	};
 
 	/**
@@ -122,21 +152,81 @@
 	 * Delete a todo.
 	 */
 
-	const deleteTodoHandler = async (id) => {
+	const deleteTodoHandler = (id) => {
+		tempoDeleteTodo.id = id; // Set the id of todo to be deleted.
+		status.deleteModal = true; // Open the delete modal.
+	};
+
+	const deleteTodoApi = async () => {
 		try {
-			const res = await fetch(`${db}/${id}`, {
+			const res = await fetch(`${db}/${tempoDeleteTodo.id}`, {
 				method: "DELETE",
 			});
 
 			if (res.status === 200) {
 				toast.success("Todo deleted successfully.");
+				tempoDeleteTodo.id = ""; // Clear the id of todo to be deleted.
 			}
 		} catch (err) {
 			console.error(err);
 			toast.error("Todo couldn't be deleted!!", {
 				duration: 10000,
 			});
+			tempoDeleteTodo.id = ""; // Clear the id of todo to be deleted.
 		}
+	};
+
+	/**
+	 * Edit & update a todo.
+	 * editTodoHandler() handles the edit process.
+	 * updateTodoHandler() handles the update process.
+	 */
+
+	const editTodoHandler = (id) => {
+		// Get the todo to be edited.
+		const todo = todoList.find((todo) => todo.id === id);
+		tempoEditTodo.title = todo.title; // Set the title of todo to be edited.
+		tempoEditTodo.id = id; // Store the id of todo to be edited.
+		status.editModal = true; // Open the edit modal.
+	};
+
+	const updateTodoHandler = async () => {
+		status.editModal = false; // Close the edit modal.
+
+		try {
+			const res = await fetch(`${db}/${tempoEditTodo.id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					...tempoEditTodo,
+					status: getTodoStatusbyId(tempoEditTodo.id),
+				}),
+			});
+
+			if (res.status === 200) {
+				toast.success("Todo updated successfully.");
+				tempoEditTodo = {}; // Clear the tempoEditTodo object.
+			}
+		} catch (err) {
+			console.error(err);
+			toast.error("Todo couldn't be updated!!", {
+				duration: 10000,
+			});
+			tempoEditTodo = {}; // Clear the tempoEditTodo object.
+		}
+	};
+
+	/**
+	 *
+	 * Close modal handler.
+	 */
+
+	const closeModalHandler = () => {
+		status.deleteModal = false; // Close the delete modal.
+		status.editModal = false; // Close the edit modal.
+		tempoDeleteTodo.id = ""; // Clear the id of todo to be deleted.
 	};
 
 	/**
@@ -206,7 +296,11 @@
 							</Badge>
 						</div>
 						<div class="actions">
-							<Button size="xs" color="light">
+							<Button
+								on:click={() => editTodoHandler(todo.id)}
+								size="xs"
+								color="light"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="16"
@@ -226,7 +320,7 @@
 							<Button
 								size="xs"
 								color="red"
-								on:click={deleteTodoHandler(todo.id)}
+								on:click={() => deleteTodoHandler(todo.id)}
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -247,3 +341,64 @@
 		</div>
 	</div>
 </form>
+
+{#if status.editModal}
+	<Modal
+		bind:open={status.editModal}
+		size="xs"
+		autoclose={false}
+		class="w-full"
+	>
+		<div class="flex flex-col space-y-6">
+			<h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">
+				Editing
+			</h3>
+			<Input
+				type="text"
+				name="edit-todo"
+				bind:value={tempoEditTodo.title}
+			/>
+			<Button
+				type="submit"
+				class="w-full1"
+				disabled={!tempoEditTodo.title}
+				on:click={() => updateTodoHandler(tempoEditTodo.id)}
+			>
+				Update
+			</Button>
+		</div>
+	</Modal>
+{/if}
+
+{#if status.deleteModal}
+	<Modal bind:open={status.deleteModal} size="xs" autoclose>
+		<div class="text-center">
+			<svg
+				aria-hidden="true"
+				class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+				/>
+			</svg>
+			<h3
+				class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
+			>
+				Are you sure you want to delete this todo?
+			</h3>
+			<Button color="red" class="mr-2" on:click={() => deleteTodoApi()}>
+				Delete
+			</Button>
+			<Button color="alternative" on:click={() => closeModalHandler()}>
+				Close
+			</Button>
+		</div>
+	</Modal>
+{/if}
